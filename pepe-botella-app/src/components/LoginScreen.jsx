@@ -22,6 +22,11 @@ const LoginScreen = () => {
                 const playerId = playerDoc.id;
                 const playerName = playerDoc.data().name
 
+                // Obtener la fecha y hora actual en tu zona horaria local
+                 const localTime = new Date();
+                 const localOffset = localTime.getTimezoneOffset() * 60000; // Diferencia en milisegundos
+                const localDate = new Date(localTime.getTime() - localOffset);
+
                 //crear nuevo documento en "attendance" y obtener ID del jugador
                 const attendanceRef = doc(collection(db, "attendance"));
                 const attendanceId = attendanceRef.id;
@@ -30,7 +35,7 @@ const LoginScreen = () => {
                 await addDoc(collection(db, "attendance"),{
                   ID: attendanceId,
                   playerID: playerName,
-                  trainingDateArrival: new Date().toISOString(),  
+                  trainingDateArrival: localDate.toISOString(),  
                 });
 
                 alert(`✅ ${playerName}, tu asistencia ha sido registrada.`);
@@ -51,20 +56,20 @@ return (
         <img
           src={logo}
           alt="Logo"
-          className="w-12 h-12 mx-auto mb-4 rounded-full"
+          className="logo"
         />
 
         <input
           type="email"
           placeholder="ingresa tu correo."
-          className="border p-2 w-full rounded-md mb-4"
+          className="input-field"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <button
           onClick={handleCheckEmail}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
+          className="submit-button"
         >
           Ingresar
         </button>
