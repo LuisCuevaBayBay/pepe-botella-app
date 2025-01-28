@@ -4,28 +4,30 @@ import db from "../firebaseconfig";
 import logo from "../assets/logo.jpg";
 
 const LoginScreen = () => {
-    const [email, setEmail] = useState("");
-
-    const handleCheckEmail = async () => {
-        if (!email){
-            alert("Por favor, ingresa tu correo.");
+    const [pin, setPin] = useState("");
+  
+    const handleCheckPin = async () => {
+        if (!pin || pin.length !== 4){
+            alert("Por favor, ingresa tu PIN de 4 digitos.");
             return;
         }
 
         try{
-            const q = query(collection(db, "players"), where("email", "==", email));
+            const pinNumber = parseInt(pin, 10);
+            console.log("Buscando PIN: ", pin);
+            const q = query(collection(db, "players"), where("pin", "==", pin.toString()));
             const QuerySnapshot = await getDocs(q);    
             
             if(!QuerySnapshot.empty){
                 //Obtener ID del Jugador
                 const playerDoc = QuerySnapshot.docs[0];
                 const playerId = playerDoc.id;
-                const playerName = playerDoc.data().name
+                const playerName = playerDoc.data().name;
 
                 // Obtener la fecha y hora actual en tu zona horaria local
                  const localTime = new Date();
                  const localOffset = localTime.getTimezoneOffset() * 60000; // Diferencia en milisegundos
-                const localDate = new Date(localTime.getTime() - localOffset);
+                 const localDate = new Date(localTime.getTime() - localOffset);
 
                 //crear nuevo documento en "attendance" y obtener ID del jugador
                 const attendanceRef = doc(collection(db, "attendance"));
@@ -40,11 +42,11 @@ const LoginScreen = () => {
 
                 alert(`✅ ${playerName}, tu asistencia ha sido registrada.`);
         }else{
-            alert("❌ Correo no encontrado.");
+            alert("❌ Ocurrio un error al buscar tu PIN.");
         }
         }catch(error){
             console.error("Error getting documents: ", error);
-            alert("Ocurrió un error en la búsqueda de correo.");
+            alert("Ocurrió un error en la búsqueda del Pin.");
         }
 };
 
@@ -60,26 +62,31 @@ return (
         />
 
         <input
-          type="email"
-          placeholder="ingresa tu correo."
+          type="text"
+          placeholder="ingresa tu pin."
           className="input-field"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={pin}
+          onChange={(e) => setPin(e.target.value)}
+          maxLength={4}
         />
 
         <button
-          onClick={handleCheckEmail}
+          onClick={handleCheckPin}
           className="submit-button"
         >
           Ingresar
         </button>
 
         <p className="mt-4 text-sm text-gray-600">
-          Ingresa tu correo para registrar tu asistencia.
+          Ingresa tu PIN para registrar tu asistencia.
         </p>
-        <a href="#" className="text-blue-500 text-sm">
-          Iniciar Sesión
-        </a>
+        
+        <div className="auth-links">
+          <a href="#" className="text-blue-500 text-sm block mb-2">Registrarse</a>
+          <a href="#" className="text-blue-500 text-sm block">Iniciar Sesión</a>
+        </div>
+
+        
       </div>
     </div>
   );
