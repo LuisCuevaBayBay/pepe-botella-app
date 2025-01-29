@@ -2,6 +2,7 @@ import { useState } from "react";
 import { doc, collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import db from "../firebaseconfig";
 import logo from "../assets/logo.jpg";
+import {Link} from "react-router-dom";
 
 const LoginScreen = () => {
     const [pin, setPin] = useState("");
@@ -62,7 +63,7 @@ return (
         />
 
         <input
-          type="text"
+          type="password"
           placeholder="ingresa tu pin."
           className="input-field"
           value={pin}
@@ -82,7 +83,7 @@ return (
         </p>
         
         <div className="auth-links">
-          <a href="#" className="text-blue-500 text-sm block mb-2">Registrarse</a>
+          <a href="/register" className="text-blue-500 text-sm block mb-2">Registrarse</a>
           <a href="#" className="text-blue-500 text-sm block">Iniciar Sesión</a>
         </div>
 
