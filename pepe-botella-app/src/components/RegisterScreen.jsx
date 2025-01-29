@@ -35,29 +35,6 @@ const handleRegister = async ()=>{
     }
 };
 
-const handleGoogleSignUp = async()=>{
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    try{
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-
-        await addDoc(collection(db, "players"),{
-            name: user.displayName.split(" ")[0],  
-            lastName: user.displayName.split(" ")[1],
-            position: "", //editar luego
-            pin: "", //el usuario debe asignarlo despues
-            email: user.email,
-            phone: user.phoneNumber || "", //el usuario debe ingresarlo despues
-            registrationDate: new Date().toISOString(),
-        });
-        alert("✅ Registro con Google exitoso!");
-    }catch(error){
-        console.error("Error signing in with Google: ", error);
-        alert("❌ Ocurrió un error al registrar con Google.");
-    }
-};
-
 return(
     <div className="flex flex-col items-center justify-center h-screen bg-gray-200">
         <img src="../public/logo.jpg" alt="Logo Pepe Botella" className="logo" />
@@ -116,11 +93,6 @@ return(
             onClick={handleRegister}
             className="bg-blue-500 text-white px-4 py-2 rounded-md w-full">
             Registrarse
-            </button>
-            <button
-            onClick={handleGoogleSignUp}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md w-full">
-            Registrarse con Google
             </button>
         </div>
     </div>

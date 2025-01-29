@@ -84,7 +84,7 @@ return (
         
         <div className="auth-links">
           <a href="/register" className="text-blue-500 text-sm block mb-2">Registrarse</a>
-          <a href="#" className="text-blue-500 text-sm block">Iniciar Sesión</a>
+          <a href="/report-login" className="text-blue-500 text-sm block">Iniciar Sesión</a>
         </div>
 
         
