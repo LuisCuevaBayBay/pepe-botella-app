@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { doc, collection, getDocs, query, where, addDoc } from "firebase/firestore";
-import db from "../firebaseconfig";
+import { db } from "../firebaseconfig";
 import logo from "../assets/logo.jpg";
 import {Link} from "react-router-dom";
 
@@ -30,13 +30,8 @@ const LoginScreen = () => {
                  const localOffset = localTime.getTimezoneOffset() * 60000; // Diferencia en milisegundos
                  const localDate = new Date(localTime.getTime() - localOffset);
 
-                //crear nuevo documento en "attendance" y obtener ID del jugador
-                const attendanceRef = doc(collection(db, "attendance"));
-                const attendanceId = attendanceRef.id;
-
-                //guardar asistencia en Firestor            
+                //guardar asistencia en Firestore            
                 await addDoc(collection(db, "attendance"),{
-                  ID: attendanceId,
                   playerID: playerName,
                   trainingDateArrival: localDate.toISOString(),  
                 });
@@ -84,7 +79,7 @@ return (
         
         <div className="auth-links">
           <a href="/register" className="text-blue-500 text-sm block mb-2">Registrarse</a>
-          <a href="/report-login" className="text-blue-500 text-sm block">Iniciar Sesión</a>
+          <a href="/report-login" className="text-blue-500 text-sm block">Iniciar Sesión para Reportes (En Construccion)⚠️🏗️ </a>
         </div>
 
         

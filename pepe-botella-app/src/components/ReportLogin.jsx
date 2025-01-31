@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { collection, query, where, getDocs } from  "firebase/firestore";
-import db from "../firebaseconfig";
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebaseconfig";
 import logo from "../assets/logo.jpg";
 
 const ReportLogin = () => {
     const [email, setEmail] = useState("");
     const [pin, setPin] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         if (!email || !pin) {
@@ -15,18 +17,25 @@ const ReportLogin = () => {
         try{
             
             const q = query(collection(db, "players"), where("email", "==", email), where("pin", "==", pin));
-            const QuerySnapshot = await getDocs(q);
+            const querySnapshot = await getDocs(q);
 
-            if(!QuerySnapshot.empty){
-                const playerDoc = QuerySnapshot.docs[0];
-                const playerId = playerDoc.id;
-                const playerName = playerDoc.data().name;
-                alert(" Inicio de Sesion exitoso");
-                //codigo para redirigir a la seccion de reportes y manejar sesion
-            }else{
+            if (!querySnapshot.empty) {
+                const playerDoc = querySnapshot.docs[0];
+                const playerData = playerDoc.data();
+
+                // Guardar la sesión del usuario en localStorage
+                localStorage.setItem("reportUser", JSON.stringify({
+                    id: playerDoc.id,
+                    name: playerData.name,
+                    email: playerData.email,
+                }));
+
+                alert("Inicio de sesión exitoso");
+                navigate("/reportes"); // Redirigir a la página de reportes
+            } else {
                 alert("Credenciales incorrectas");
             }
-        }catch(error){
+        } catch (error) {
             console.error("Error getting documents: ", error);
             alert("Ocurrió un error en la búsqueda del Pin.");
         }

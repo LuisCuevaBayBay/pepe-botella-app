@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {collection, addDoc} from "firebase/firestore";
-import {getAuth, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
-import db from "../firebaseconfig";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { db } from "../firebaseconfig";
 
 const RegisterScreen = ()=>{
     const [name, setName] = useState("");
